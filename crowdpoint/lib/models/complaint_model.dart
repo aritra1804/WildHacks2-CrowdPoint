@@ -2,15 +2,19 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:crowdpoint/models/comments_model.dart';
-import 'package:crowdpoint/models/complaint_list_model.dart';
-import 'package:crowdpoint/models/user_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'package:crowdpoint/enums.dart';
+import 'package:crowdpoint/models/comment_list_model.dart';
+import 'package:crowdpoint/models/comments_model.dart';
+import 'package:crowdpoint/models/reaction_info_model.dart';
+import 'package:crowdpoint/models/reaction_list_model.dart';
+import 'package:crowdpoint/models/user_model.dart';
+
 class ComplaintModel {
-  int upVotes;
-  int downVotes;
+  ReactionListModel? reaction;
   DateTime dateTime;
   UserModel user;
   String description;
@@ -20,8 +24,7 @@ class ComplaintModel {
   CommentListModel? comments;
   bool completed;
   ComplaintModel({
-    this.upVotes = 0,
-    this.downVotes = 0,
+    this.reaction,
     required this.dateTime,
     required this.user,
     required this.description,
@@ -29,12 +32,11 @@ class ComplaintModel {
     required this.id,
     required this.photoUrls,
     this.comments,
-    this.completed = false,
+    required this.completed,
   });
 
   ComplaintModel copyWith({
-    int? upVotes,
-    int? downVotes,
+    ReactionListModel? reaction,
     DateTime? dateTime,
     UserModel? user,
     String? description,
@@ -45,8 +47,7 @@ class ComplaintModel {
     bool? completed,
   }) {
     return ComplaintModel(
-      upVotes: upVotes ?? this.upVotes,
-      downVotes: downVotes ?? this.downVotes,
+      reaction: reaction ?? this.reaction,
       dateTime: dateTime ?? this.dateTime,
       user: user ?? this.user,
       description: description ?? this.description,
@@ -60,8 +61,7 @@ class ComplaintModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'upVotes': upVotes,
-      'downVotes': downVotes,
+      'reaction': reaction?.toMap(),
       'dateTime': dateTime.millisecondsSinceEpoch,
       'user': user.toMap(),
       'description': description,
@@ -76,8 +76,7 @@ class ComplaintModel {
   factory ComplaintModel.fromMap(map1) {
     var map = map1.data();
     return ComplaintModel(
-      upVotes: map['upVotes'] as int,
-      downVotes: map['downVotes'] as int,
+      reaction: ReactionListModel.getReactions(map1.id),
       dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int),
       user: UserModel.fromMap(map['user'] as Map<String, dynamic>),
       description: map['description'] as String,
@@ -96,16 +95,14 @@ class ComplaintModel {
 
   @override
   String toString() {
-    return 'ComplaintModel(upVotes: $upVotes, downVotes: $downVotes, dateTime: $dateTime, user: $user, description: $description, latlng: $latlng, id: $id, photoUrls: $photoUrls, comments: $comments, completed: $completed)';
+    return 'ComplaintModel(reaction: $reaction, dateTime: $dateTime, user: $user, description: $description, latlng: $latlng, id: $id, photoUrls: $photoUrls, comments: $comments, completed: $completed)';
   }
 
   @override
   bool operator ==(covariant ComplaintModel other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
 
-    return other.upVotes == upVotes &&
-        other.downVotes == downVotes &&
+    return other.reaction == reaction &&
         other.dateTime == dateTime &&
         other.user == user &&
         other.description == description &&
@@ -118,8 +115,7 @@ class ComplaintModel {
 
   @override
   int get hashCode {
-    return upVotes.hashCode ^
-        downVotes.hashCode ^
+    return reaction.hashCode ^
         dateTime.hashCode ^
         user.hashCode ^
         description.hashCode ^

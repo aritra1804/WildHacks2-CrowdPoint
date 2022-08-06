@@ -33,7 +33,7 @@ class CommentModel {
     };
   }
 
-  factory CommentModel.fromMap(Map<String, dynamic> map) {
+  factory CommentModel.fromMap(map) {
     return CommentModel(
       comment: map['comment'] as String,
       dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int),

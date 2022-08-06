@@ -6,8 +6,10 @@ import 'package:crowdpoint/HelperMethods/comment_data.dart';
 import 'package:crowdpoint/HelperMethods/common_utils.dart';
 import 'package:crowdpoint/HelperMethods/complaint_data.dart';
 import 'package:crowdpoint/constants.dart';
+import 'package:crowdpoint/enums.dart';
 import 'package:crowdpoint/models/comments_model.dart';
 import 'package:crowdpoint/models/complaint_model.dart';
+import 'package:crowdpoint/models/reaction_info_model.dart';
 import 'package:crowdpoint/models/user_model.dart';
 import 'package:crowdpoint/screens/login_screen.dart';
 import 'package:crowdpoint/services/authentication.dart';
@@ -32,6 +34,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int upvotes = 0, downvotes = 0;
   Stream<List<ComplaintModel>>? _stream;
   Position? position;
   File? imageFile;
@@ -139,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () async {
           List<String> urls = await getUrl("jfmefefmf");
           ComplaintModel complaintModel = ComplaintModel(
+              completed: false,
               dateTime: DateTime.now(),
               user: UserModel(
                   aadharNo: "54555",
@@ -248,41 +252,93 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: 8,
                             ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  constraints: BoxConstraints(),
-                                  iconSize: 22,
-                                  onPressed: () {
-                                    ComplaintData.upvoteComplaint(comp);
-                                  },
-                                  icon: Icon(
-                                    Icons.thumb_up_sharp,
-                                    size: 22,
-                                  ),
-                                ),
-                                Text(
-                                  comp.upVotes.toString(),
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                IconButton(
-                                  constraints: BoxConstraints(),
-                                  iconSize: 22,
-                                  onPressed: () {
-                                    ComplaintData.downVoteComplaint(comp);
-                                  },
-                                  icon: Icon(
-                                    Icons.thumb_down_sharp,
-                                    size: 22,
-                                  ),
-                                ),
-                                Text(
-                                  comp.downVotes.toString(),
-                                )
-                              ],
-                            ),
+                            StreamBuilder<List<ReactionInfoModel>>(
+                                stream: ComplaintData.getVotescount(comp),
+                                builder: (context, snapshot) {
+                                  int up = 0, dp = 0;
+                                  if (snapshot.hasData) {
+                                    for (var data in snapshot.data!) {
+                                      if (data.react == React.UPVOTE) {
+                                        up++;
+                                      } else if (data.react == React.DOWNVOTE) {
+                                        dp++;
+                                      }
+                                    }
+                                    upvotes = up;
+                                    downvotes = dp;
+                                    return Row(
+                                      children: [
+                                        IconButton(
+                                          constraints: BoxConstraints(),
+                                          iconSize: 22,
+                                          onPressed: () {
+                                            ComplaintData.upvoteComplaint(comp);
+                                          },
+                                          icon: Icon(
+                                            Icons.thumb_up_sharp,
+                                            size: 22,
+                                          ),
+                                        ),
+                                        Text(
+                                          upvotes.toString(),
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        IconButton(
+                                          constraints: BoxConstraints(),
+                                          iconSize: 22,
+                                          onPressed: () {
+                                            ComplaintData.downVoteComplaint(
+                                                comp);
+                                          },
+                                          icon: Icon(
+                                            Icons.thumb_down_sharp,
+                                            size: 22,
+                                          ),
+                                        ),
+                                        Text(
+                                          downvotes.toString(),
+                                        )
+                                      ],
+                                    );
+                                  }
+                                  return Row(
+                                    children: [
+                                      IconButton(
+                                        constraints: BoxConstraints(),
+                                        iconSize: 22,
+                                        onPressed: () {
+                                          ComplaintData.upvoteComplaint(comp);
+                                        },
+                                        icon: Icon(
+                                          Icons.thumb_up_sharp,
+                                          size: 22,
+                                        ),
+                                      ),
+                                      Text(
+                                        upvotes.toString(),
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      IconButton(
+                                        constraints: BoxConstraints(),
+                                        iconSize: 22,
+                                        onPressed: () {
+                                          ComplaintData.downVoteComplaint(comp);
+                                        },
+                                        icon: Icon(
+                                          Icons.thumb_down_sharp,
+                                          size: 22,
+                                        ),
+                                      ),
+                                      Text(
+                                        downvotes.toString(),
+                                      )
+                                    ],
+                                  );
+                                }),
                             SizedBox(
                               height: 6,
                             ),
@@ -292,18 +348,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          comp.comments!.commentList.length < 2
-                                              ? comp
-                                                  .comments!.commentList.length
-                                              : 2,
-                                      itemBuilder: (context, index) {
-                                        return Text(comp.comments!
-                                            .commentList[index].comment);
-                                      },
-                                    ),
+                                    StreamBuilder<List<CommentModel>>(
+                                        stream:
+                                            CommentData.getCommentsStream(comp),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: comp.comments!
+                                                          .commentList.length <
+                                                      2
+                                                  ? comp.comments!.commentList
+                                                      .length
+                                                  : 2,
+                                              itemBuilder: (context, index) {
+                                                return Text(comp
+                                                    .comments!
+                                                    .commentList[index]
+                                                    .comment);
+                                              },
+                                            );
+                                          }
+                                          return Container();
+                                        }),
                                     SizedBox(
                                       height: 4,
                                     ),
