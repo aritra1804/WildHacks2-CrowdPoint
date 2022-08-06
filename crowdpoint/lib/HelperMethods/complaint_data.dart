@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdpoint/enums.dart';
 import 'package:crowdpoint/models/complaint_model.dart';
 import 'package:crowdpoint/models/reaction_info_model.dart';
-import 'package:crowdpoint/models/reaction_list_model.dart';
-import 'package:crowdpoint/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ComplaintData {
@@ -21,13 +19,15 @@ class ComplaintData {
   }
 
   static Stream<List<ComplaintModel>> getComplaintsStream() {
-    Stream<QuerySnapshot> complaintRefStream =
-        FirebaseFirestore.instance.collection("complaints").snapshots();
+    Stream<QuerySnapshot> complaintRefStream = FirebaseFirestore.instance
+        .collection("complaints")
+        .orderBy('dateTime', descending: true)
+        .snapshots();
 
     List<ComplaintModel> complaintList = [];
     return complaintRefStream.map((qshot) {
       return qshot.docs.map((doc) {
-        print(doc.data());
+        // print(doc.data());
 
         return ComplaintModel.fromMap(doc);
       }).toList();
@@ -55,7 +55,7 @@ class ComplaintData {
         .collection('reactions')
         .doc(FirebaseAuth.instance.currentUser!.uid);
     complaintRef.get().then((value) {
-      print(value.data());
+      // print(value.data());
       if (value.data() != null) {
         reactionInfoModel = ReactionInfoModel.fromMap(value.data());
       }
@@ -135,7 +135,7 @@ class ComplaintData {
         .snapshots();
     return complaintRefStream.map((qshot) {
       return qshot.docs.map((doc) {
-        print(doc.data());
+        // print(doc.data());
 
         return ReactionInfoModel.fromMap(doc.data());
       }).toList();
