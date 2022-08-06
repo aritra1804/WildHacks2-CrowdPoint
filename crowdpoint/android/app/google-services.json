@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "111068910617",
+    "project_id": "crowdpoint-fc7ef",
+    "storage_bucket": "crowdpoint-fc7ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111068910617:android:d56f90f7b20a611cc0c688",
+        "android_client_info": {
+          "package_name": "com.example.crowdpoint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111068910617-43k9sg905bj0fkbs1fp880h0qohonkh0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.crowdpoint",
+            "certificate_hash": "80c3b2cb5f268a78cd1e66b6aa8677e9e8d0db80"
+          }
+        },
+        {
+          "client_id": "111068910617-8ks116fes9nkkg0fumm2uhracg596587.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm7wYCgvrMDkb5wk4p-Brd2E46m_zhmP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111068910617-8ks116fes9nkkg0fumm2uhracg596587.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
