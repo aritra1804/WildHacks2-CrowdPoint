@@ -1,9 +1,7 @@
-import 'package:crowdpoint/dataProvider/appdata.dart';
 import 'package:crowdpoint/screens/home_screen.dart';
 import 'package:crowdpoint/services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,9 +18,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
           child: MaterialButton(
         child: Container(
-            padding: const EdgeInsets.all(15),
-            color: Colors.blue,
-            child: Text("Google Sign in")),
+          padding: const EdgeInsets.all(15),
+          color: Colors.blue,
+          child: Text("Google Sign in"),
+        ),
         onPressed: () async {
           User? user = await Authentication.signInWithGoogle(context: context);
           final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -30,7 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
           prefs.setString('email', user.email!);
           prefs.setString('dpUrl', user.photoURL!);
 
-          Provider.of<AppData>(context, listen: false).user = user;
           if (user != null) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(

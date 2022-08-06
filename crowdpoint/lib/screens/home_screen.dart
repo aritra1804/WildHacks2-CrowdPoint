@@ -2,13 +2,15 @@
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdpoint/HelperMethods/comment_data.dart';
 import 'package:crowdpoint/HelperMethods/common_utils.dart';
 import 'package:crowdpoint/HelperMethods/complaint_data.dart';
+import 'package:crowdpoint/constants.dart';
 import 'package:crowdpoint/models/comments_model.dart';
 import 'package:crowdpoint/models/complaint_model.dart';
 import 'package:crowdpoint/models/user_model.dart';
+import 'package:crowdpoint/screens/login_screen.dart';
+import 'package:crowdpoint/services/authentication.dart';
 import 'package:crowdpoint/services/location_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:readmore/readmore.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -29,6 +32,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Stream<List<ComplaintModel>>? _stream;
   Position? position;
   File? imageFile;
   final TextEditingController commentController = TextEditingController();
@@ -40,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    _stream = ComplaintData.getComplaintsStream();
     super.initState();
   }
 
@@ -67,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     UserModel user = UserModel(
         aadharNo: "54555",
         email: widget.user.email!,
@@ -96,6 +102,39 @@ class _HomeScreenState extends State<HomeScreen> {
     // );
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kL1Color,
+        foregroundColor: kBlackColor,
+        elevation: 1,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.account_circle_outlined,
+          ),
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await Authentication.signOut(context: context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginScreen(),
+                ),
+              );
+            },
+            icon: Icon(Icons.logout_rounded),
+          )
+        ],
+        title: Text(
+          "CrowdPoint",
+          style: TextStyle(
+            fontFamily: "Quicksand",
+          ),
+        ),
+      ),
+      backgroundColor: kBgColor,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           List<String> urls = await getUrl("jfmefefmf");
@@ -115,83 +154,213 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Text('+'),
       ),
-      body: Center(
+      body: Container(
+        width: size.width,
+        height: size.height,
         child: StreamBuilder<List<ComplaintModel>>(
-          stream: ComplaintData.getComplaintsStream(),
+          stream: _stream,
           builder: (context, AsyncSnapshot<List<ComplaintModel>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
             if (snapshot.hasData) {
+              print('hiiii');
               return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var comp = snapshot.data![index];
-                    return Container(
+                    print(comp);
+                    return Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 10),
-                      child: Column(children: [
-                        CarouselSlider(
-                            items: comp.photoUrls
-                                .map((pic) => Image.network(pic))
-                                .toList(),
-                            options: CarouselOptions()),
-                        Text(comp.description),
-                        SizedBox(
-                          height: 12,
+                        vertical: 16.0,
+                        horizontal: 8,
+                      ),
+                      child: Container(
+                        decoration: kBoxDecoration,
+                        padding: const EdgeInsets.only(
+                          // vertical: 12,
+                          bottom: 8,
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  ComplaintData.upvoteComplaint(comp);
-                                },
-                                icon: Icon(Icons.thumbs_up_down_sharp)),
-                            Text(comp.upVotes.toString()),
-                            SizedBox(
-                              width: 22,
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  ComplaintData.downVoteComplaint(comp);
-                                },
-                                icon: Icon(Icons.thumb_down_sharp)),
-                            Text(comp.downVotes.toString())
-                          ],
-                        ),
-                        comp.comments != null
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: comp.comments!.commentList.length,
-                                itemBuilder: (context, index) {
-                                  return Text(comp
-                                      .comments!.commentList[index].comment);
-                                },
-                              )
-                            : Container(),
-                        Row(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Container(
-                              width: 100,
-                              child: TextField(
-                                controller: commentController,
+                              decoration: kTileUserNameDecoration,
+                              height: size.height * 0.08,
+                              padding: EdgeInsets.all(8),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    foregroundImage:
+                                        NetworkImage(comp.user.dpurl),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text(
+                                    comp.user.name,
+                                    style: TextStyle(
+                                      fontSize: size.width * 0.05,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.more_horiz),
+                                  )
+                                ],
                               ),
                             ),
-                            MaterialButton(
-                                onPressed: () {
-                                  CommentData.addComment(
-                                      comp.id,
-                                      CommentModel(
-                                          comment: commentController.text,
-                                          dateTime: DateTime.now(),
-                                          user: user));
-                                },
-                                padding: const EdgeInsets.all(15),
-                                color: Colors.blue,
-                                child: Text("Comment"))
+                            Container(
+                              decoration: kTileUserNameDecoration,
+                              height: size.height * 0.4,
+                              child: CarouselSlider(
+                                items: comp.photoUrls
+                                    .map((pic) => Image.network(pic))
+                                    .toList(),
+                                options: CarouselOptions(
+                                  enableInfiniteScroll: false,
+                                  height: size.height * 0.4,
+                                  enlargeCenterPage: true,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              child: ReadMoreText(
+                                comp.description,
+                                trimMode: TrimMode.Length,
+                                trimLength: 40,
+                                colorClickableText: Colors.grey,
+                                trimCollapsedText: 'more',
+                                trimExpandedText: ' less',
+                                style: TextStyle(
+                                  overflow: TextOverflow.visible,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  constraints: BoxConstraints(),
+                                  iconSize: 22,
+                                  onPressed: () {
+                                    ComplaintData.upvoteComplaint(comp);
+                                  },
+                                  icon: Icon(
+                                    Icons.thumb_up_sharp,
+                                    size: 22,
+                                  ),
+                                ),
+                                Text(
+                                  comp.upVotes.toString(),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                IconButton(
+                                  constraints: BoxConstraints(),
+                                  iconSize: 22,
+                                  onPressed: () {
+                                    ComplaintData.downVoteComplaint(comp);
+                                  },
+                                  icon: Icon(
+                                    Icons.thumb_down_sharp,
+                                    size: 22,
+                                  ),
+                                ),
+                                Text(
+                                  comp.downVotes.toString(),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 6,
+                            ),
+                            if (comp.comments != null)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          comp.comments!.commentList.length < 2
+                                              ? comp
+                                                  .comments!.commentList.length
+                                              : 2,
+                                      itemBuilder: (context, index) {
+                                        return Text(comp.comments!
+                                            .commentList[index].comment);
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      "View all comments",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            else
+                              Container(),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              decoration: kTileUserNameDecoration.copyWith(
+                                border: Border(
+                                  top: BorderSide(width: 0.1),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        hintText: "Add a comment...",
+                                        border: InputBorder.none,
+                                      ),
+                                      controller: commentController,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.send,
+                                    ),
+                                    onPressed: () {
+                                      CommentData.addComment(
+                                        comp.id,
+                                        CommentModel(
+                                            comment: commentController.text,
+                                            dateTime: DateTime.now(),
+                                            user: user),
+                                      );
+                                    },
+                                    padding: const EdgeInsets.all(15),
+                                    color: Colors.blue,
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
-                        )
-                      ]),
+                        ),
+                      ),
                     );
                   });
             } else {

@@ -1,5 +1,5 @@
 import 'package:crowdpoint/dataProvider/appdata.dart';
-import 'package:crowdpoint/screens/login_screen.dart';
+import 'package:crowdpoint/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: const LoginScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
