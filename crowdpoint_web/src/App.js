@@ -2,6 +2,7 @@ import {Footer}  from './components/Footer';
 import './App.css';
 import Navbar from './components/Navbar';
 import Welcome from './components/Welcome';
+import Login from './components/Login';
 
 function App() {
   return (
@@ -14,10 +15,11 @@ function App() {
         </div>
       </div>
       <div className="bg-sky-200">  
-        <Navbar/>
-        <Welcome/>
+         <Navbar/>
+        {/* <Welcome/>  */}
         {/* Footer */}
-        <Footer/>
+        <Login/>
+        {/* <Footer/> */}
       </div>
     </div>
   );
