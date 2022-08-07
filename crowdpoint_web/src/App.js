@@ -3,6 +3,7 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Welcome from './components/Welcome';
 import Login from './components/Login';
+import Card from './components/Card.jsx';
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
       <div className="bg-sky-200">  
          <Navbar/>
         {/* <Welcome/>  */}
-        {/* Footer */}
-        <Login/>
+        {/* <Login/> */}
+         <Card/>
         {/* <Footer/> */}
       </div>
     </div>
