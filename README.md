@@ -36,11 +36,11 @@ It is very simple to use, see garbage orf pollution in your locality, just click
 
 ## 👩🏻‍💻Tech Stack
 
-+ Flutter  <a href="https://flutter.dev/"><img src="assets/flutter.png" width="40"></img></a>&nbsp;&nbsp;
++ Flutter  <a href="https://flutter.dev/"><img src="crowdpoint_web/flutter.png" width="40"></img></a>&nbsp;&nbsp;
 
-+ React  <a href="https://reactjs.org/"><img src="assets/react.png" width="40"></img></a>&nbsp;&nbsp;
++ React  <a href="https://reactjs.org/"><img src="crowdpoint_web/react.png" width="40"></img></a>&nbsp;&nbsp;
 
-+ Dart  <a href="https://dart.dev/"><img src="assets/dart.png" width="40"></img></a>&nbsp;&nbsp;
++ Dart  <a href="https://dart.dev/"><img src="crowdpoint_web/dart.png" width="40"></img></a>&nbsp;&nbsp;
 
 
 
