@@ -1,3 +1,4 @@
+import 'package:crowdpoint/models/user_model.dart';
 import 'package:crowdpoint/screens/login_screen.dart';
 import 'package:crowdpoint/services/authentication.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class ProfilePage extends StatefulWidget {
-  var user;
+  UserModel user;
   ProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -51,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             CircleAvatar(
               foregroundImage: NetworkImage(
-                widget.user.photoURL,
+                widget.user.dpurl,
               ),
               backgroundColor: Colors.grey,
               radius: size.width * 0.15,
@@ -60,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 4,
             ),
             Text(
-              widget.user.displayName,
+              widget.user.name,
               style: TextStyle(fontSize: size.width * 0.07),
             ),
             Text(

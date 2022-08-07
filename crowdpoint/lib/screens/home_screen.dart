@@ -16,6 +16,7 @@ import 'package:crowdpoint/screens/login_screen.dart';
 import 'package:crowdpoint/screens/profile_screen.dart';
 import 'package:crowdpoint/services/authentication.dart';
 import 'package:crowdpoint/services/location_service.dart';
+import 'package:crowdpoint/services/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +32,8 @@ import '../dataProvider/appdata.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     Key? key,
-    required this.user,
   }) : super(key: key);
-  final User user;
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     _stream = ComplaintData.getComplaintsStream();
+    notif(context);
     super.initState();
   }
 
@@ -84,13 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = Provider.of<AppData>(context, listen: false).user!;
+
     var size = MediaQuery.of(context).size;
     var data = Provider.of<AppData>(context, listen: false);
-    UserModel user = UserModel(
-        aadharNo: "54555",
-        email: widget.user.email!,
-        name: widget.user.displayName!,
-        dpurl: widget.user.photoURL!);
+
     // return Scaffold(
     //   body: SafeArea(
     //       child: Center(
@@ -128,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProfilePage(user: widget.user),
+                builder: (context) => ProfilePage(user: user),
               ),
             );
           },

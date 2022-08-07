@@ -1,9 +1,15 @@
 import 'dart:io';
 
 import 'package:crowdpoint/HelperMethods/common_utils.dart';
+import 'package:crowdpoint/HelperMethods/complaint_data.dart';
+import 'package:crowdpoint/dataProvider/appdata.dart';
+import 'package:crowdpoint/services/location_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import '../models/complaint_model.dart';
@@ -23,6 +29,7 @@ class _GetDetailsState extends State<GetDetails> {
   var photoId = "";
   @override
   Widget build(BuildContext context) {
+    var data = Provider.of<AppData>(context, listen: false);
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -93,7 +100,7 @@ class _GetDetailsState extends State<GetDetails> {
                       photoId = '$id.png';
                       setState(() {});
                     },
-                    child: Text("Upload"),
+                    child: Text("Choose"),
                   )
                 ],
               ),
@@ -101,21 +108,18 @@ class _GetDetailsState extends State<GetDetails> {
                 height: 16,
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  Position position = await determinePosition();
                   ComplaintModel complaintModel = ComplaintModel(
                       completed: false,
                       dateTime: id,
-                      user: UserModel(
-                          aadharNo: "54555",
-                          email: widget.user.email!,
-                          name: widget.user.displayName!,
-                          dpurl: widget.user.photoURL!),
-                      description: "hi there this is a sample description",
-                      latlng: LatLng(
-                          data.position!.latitude, data.position!.longitude),
+                      user: data.user!,
+                      description: descriptionController.text,
+                      latlng: LatLng(position.latitude, position.longitude),
                       id: id.toString(),
                       photoUrls: urls);
-                  ComplaintData.uploadComplaint(complaintModel);
+                  await ComplaintData.uploadComplaint(complaintModel);
+                  Navigator.pop(context);
                 },
                 child: Text("Upload"),
               ),
@@ -133,7 +137,7 @@ class _GetDetailsState extends State<GetDetails> {
 
     if (imageFile != null) {
       if (kDebugMode) {
-        print("You selected  image : " + imageFile.path);
+        print("You selected  image : ${imageFile.path}");
       }
       return File(imageFile.path);
     } else {
