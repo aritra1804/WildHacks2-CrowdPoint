@@ -5,12 +5,14 @@ class UserModel {
   String name;
   String email;
   String dpurl;
-  String aadharNo;
+  String? aadharNo;
+  String? messagingToken;
   UserModel({
     required this.name,
     required this.email,
     required this.dpurl,
-    required this.aadharNo,
+    this.aadharNo,
+    this.messagingToken,
   });
 
   UserModel copyWith({
@@ -18,12 +20,14 @@ class UserModel {
     String? email,
     String? dpurl,
     String? aadharNo,
+    String? messagingToken,
   }) {
     return UserModel(
       name: name ?? this.name,
       email: email ?? this.email,
       dpurl: dpurl ?? this.dpurl,
       aadharNo: aadharNo ?? this.aadharNo,
+      messagingToken: messagingToken ?? this.messagingToken,
     );
   }
 
@@ -33,6 +37,7 @@ class UserModel {
       'email': email,
       'dpurl': dpurl,
       'aadharNo': aadharNo,
+      'messagingToken': messagingToken,
     };
   }
 
@@ -41,7 +46,10 @@ class UserModel {
       name: map['name'] as String,
       email: map['email'] as String,
       dpurl: map['dpurl'] as String,
-      aadharNo: map['aadharNo'] as String,
+      aadharNo: map['aadharNo'] != null ? map['aadharNo'] as String : null,
+      messagingToken: map['messagingToken'] != null
+          ? map['messagingToken'] as String
+          : null,
     );
   }
 
@@ -52,7 +60,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email, dpurl: $dpurl, aadharNo: $aadharNo)';
+    return 'UserModel(name: $name, email: $email, dpurl: $dpurl, aadharNo: $aadharNo, messagingToken: $messagingToken)';
   }
 
   @override
@@ -62,11 +70,16 @@ class UserModel {
     return other.name == name &&
         other.email == email &&
         other.dpurl == dpurl &&
-        other.aadharNo == aadharNo;
+        other.aadharNo == aadharNo &&
+        other.messagingToken == messagingToken;
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^ email.hashCode ^ dpurl.hashCode ^ aadharNo.hashCode;
+    return name.hashCode ^
+        email.hashCode ^
+        dpurl.hashCode ^
+        aadharNo.hashCode ^
+        messagingToken.hashCode;
   }
 }

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdpoint/models/comments_model.dart';
-import 'package:crowdpoint/models/comment_list_model.dart';
 import 'package:crowdpoint/models/complaint_model.dart';
 
 class CommentData {
@@ -13,7 +12,7 @@ class CommentData {
         .doc(comment.dateTime.toString())
         .set(comment.toMap())
         .then((value) {
-      print(comment.toMap());
+      // print(comment.toMap());
       print("Comment Added");
     }).catchError((error) => print("Failed to add comment: $error"));
   }
@@ -24,10 +23,11 @@ class CommentData {
         .collection("complaints")
         .doc(complaint.id)
         .collection("comments")
+        .orderBy('dateTime', descending: true)
         .snapshots();
     return stream.map((qshot) {
       return qshot.docs.map((doc) {
-        print(doc.data());
+        // print(doc.data());
 
         return CommentModel.fromMap(doc);
       }).toList();

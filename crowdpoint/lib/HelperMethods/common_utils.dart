@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CommonUtils {
   static SnackBar customSnackBar({required String content}) {
@@ -24,7 +23,7 @@ class CommonUtils {
       await ref.putFile(file);
 
       downloadURL = await ref.getDownloadURL();
-      print(downloadURL);
+      // print(downloadURL);
       return downloadURL;
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
