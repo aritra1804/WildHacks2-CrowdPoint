@@ -50,18 +50,14 @@ It is very simple to use, see garbage orf pollution in your locality, just click
 
 
 ## Future Scope
-- Integration with Smart Camera and iot.
-- Real-Time Geolocation Support.
-- Added User Authority and User Authentication.
-- Improved model accuracy alng with mask-wear detection and logging.
-- Successive support in Low-light conditions with the help of remarkable DL libs.
-- Attendance System.
-- Timesheet management to easily calculate hours and have all the data about employee work
+- Real-time visualization of data points on a geo map.
+- Connecting with Government platforms.
+- Incorporating ML models for better visualization of data.
 <br>
 <br>
 
 ## Contributors 
-* [Abhinav Maharana](https://github.com/abhinavmaharana/)
+* [Tanishq Kashyap](https://github.com/Tanishq2505)
 * [Aritra Dutta](https://github.com/aritra1804)
-* [Omprasad Sadavarte](https://github.com/OmSadavarte)
-* [MD Farhan](https://github.com/farhan121212)
+* [Kartikey Mahawar](https://github.com/kartikey321)
+* [Akshat Agarwal](https://github.com/AKSHAT20-OFFICIAL)
