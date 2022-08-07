@@ -56,6 +56,7 @@ class _AadharCardDialogState extends State<AadharCardDialog> {
                 height: 50,
               ),
               TextField(
+                  keyboardType: TextInputType.number,
                   controller: aadharController,
                   decoration: InputDecoration(
                     errorStyle: TextStyle(
@@ -88,6 +89,8 @@ class _AadharCardDialogState extends State<AadharCardDialog> {
                       .collection("users")
                       .doc(FirebaseAuth.instance.currentUser!.uid)
                       .set(userModel.toMap());
+                  Provider.of<AppData>(context, listen: false)
+                      .setUser(userModel);
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => HomeScreen(),
