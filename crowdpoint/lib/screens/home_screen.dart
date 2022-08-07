@@ -23,6 +23,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 
@@ -470,20 +471,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       CrossAxisAlignment
                                                                           .start,
                                                                   children: [
-                                                                    Text(
-                                                                      snapshot
-                                                                          .data![
-                                                                              index]
-                                                                          .user
-                                                                          .name,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            size.width *
-                                                                                0.043,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .user
+                                                                              .name,
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                size.width * 0.043,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              4,
+                                                                        ),
+                                                                        Text(
+                                                                          DateFormat('dd-MM-yyyy – hh:mm a')
+                                                                              .format(snapshot.data![index].dateTime)
+                                                                              .toString(),
+                                                                          style:
+                                                                              TextStyle(color: Colors.black54),
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                     Text(
                                                                       snapshot
