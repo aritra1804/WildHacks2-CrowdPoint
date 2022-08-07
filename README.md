@@ -11,7 +11,7 @@
 <br>
 
 
-## About The Project 
+## About The Project ℹ️
 We have all seen people complain about the garbage and pollution in their society and localities. Yet only a few people really work towards making a change.
 In this hackathon, we thought of becoming the catalysts to change. We also thought to help our friendly environmentalists and data scientists with the help of people.
 <br>
@@ -19,7 +19,7 @@ In this hackathon, we thought of becoming the catalysts to change. We also thoug
 
 
 <!-- ABOUT THE PROJECT -->
-## Objective
+## Objective 🎯
 - Create awarness of pollution at grassroots level.
 - Providing oppurtinity for citizens to bring the change they wish to see.
 - Store live data of resources and pollution for friendly environmentalists and data scientists.
@@ -28,13 +28,13 @@ In this hackathon, we thought of becoming the catalysts to change. We also thoug
 <br>
 <br>
 
-## Novelty of our project
+## Novelty of our project 🧭
 CrowdPoint is an independent and reliable data collection platform by citizens  – Citizen Science – for modelling and collection of information on pollution at the grassroots level. This also acts as a social awareness platform for citizens to provide information on pollution in their localities to other citizens and government authorities.
 It is very simple to use, see garbage orf pollution in your locality, just click a  picture, provide location and post!!!
 <br>
 <br>
 
-## 👩🏻‍💻Tech Stack
+## 👩🏻‍💻Tech Stack ⚒️
 
 + Flutter  <a href="https://flutter.dev/"><img src="crowdpoint_web/flutter.png" width="40"></img></a>&nbsp;&nbsp;
 
@@ -49,14 +49,14 @@ It is very simple to use, see garbage orf pollution in your locality, just click
 <br>
 
 
-## Future Scope
+## Future Scope 🔮
 - Real-time visualization of data points on a geo map.
 - Connecting with Government platforms.
 - Incorporating ML models for better visualization of data.
 <br>
 <br>
 
-## Contributors 
+## Contributors 👨‍💻
 * [Tanishq Kashyap](https://github.com/Tanishq2505)
 * [Aritra Dutta](https://github.com/aritra1804)
 * [Kartikey Mahawar](https://github.com/kartikey321)
