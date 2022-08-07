@@ -62,10 +62,17 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Text(
               widget.user.name,
-              style: TextStyle(fontSize: size.width * 0.07),
+              style: TextStyle(
+                fontSize: size.width * 0.07,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             Text(
               widget.user.email,
+              style: TextStyle(fontSize: size.width * 0.05, color: Colors.grey),
+            ),
+            Text(
+              widget.user.aadharNo.toString(),
               style: TextStyle(fontSize: size.width * 0.05, color: Colors.grey),
             ),
             SizedBox(

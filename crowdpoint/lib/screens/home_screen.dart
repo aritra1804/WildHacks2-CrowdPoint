@@ -17,7 +17,6 @@ import 'package:crowdpoint/screens/profile_screen.dart';
 import 'package:crowdpoint/services/authentication.dart';
 import 'package:crowdpoint/services/location_service.dart';
 import 'package:crowdpoint/services/notifications.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -249,8 +248,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    IconButton(
-                                      onPressed: () {},
+                                    PopupMenuButton(
+                                      itemBuilder: (context) {
+                                        return [
+                                          PopupMenuItem<int>(
+                                            value: 0,
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(
+                                                  Icons.error_outline,
+                                                ),
+                                                SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Text("Report"),
+                                              ],
+                                            ),
+                                          ),
+                                        ];
+                                      },
                                       icon: const Icon(Icons.more_horiz),
                                     )
                                   ],
